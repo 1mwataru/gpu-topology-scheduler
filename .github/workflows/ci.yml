@@ -13,7 +13,9 @@ jobs:
           ETCD_VER=v3.5.21
           curl -sL https://github.com/etcd-io/etcd/releases/download/${ETCD_VER}/etcd-${ETCD_VER}-linux-amd64.tar.gz | \
             tar xz --strip-components=1 -C /usr/local/bin etcd-${ETCD_VER}-linux-amd64/etcd
+      - name: Build
+        run: make build
       - name: Unit tests
         run: make test
       - name: Integration tests
-        run: go test ./test/integration/ -timeout=180s
+        run: make integration-test
