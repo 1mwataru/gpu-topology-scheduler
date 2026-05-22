@@ -1,0 +1,20 @@
+apiVersion: kubescheduler.config.k8s.io/v1
+kind: KubeSchedulerConfiguration
+leaderElection:
+  leaderElect: false
+profiles:
+  - schedulerName: gpu-topology-scheduler
+    plugins:
+      score:
+        enabled:
+          - name: GpuTopology
+            weight: 10
+    pluginConfig:
+      - name: GpuTopology
+        args:
+          apiVersion: kubescheduler.config.k8s.io/v1
+          kind: GpuTopologyArgs
+          scoreSameNode: 100
+          scoreSameNVLinkDomain: 80
+          scoreSameRack: 50
+          scoreDifferentRack: 10

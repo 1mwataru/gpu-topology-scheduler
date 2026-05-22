@@ -1,0 +1,19 @@
+name: CI
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+      - name: Install etcd
+        run: |
+          ETCD_VER=v3.5.21
+          curl -sL https://github.com/etcd-io/etcd/releases/download/${ETCD_VER}/etcd-${ETCD_VER}-linux-amd64.tar.gz | \
+            tar xz --strip-components=1 -C /usr/local/bin etcd-${ETCD_VER}-linux-amd64/etcd
+      - name: Unit tests
+        run: make test
+      - name: Integration tests
+        run: go test ./test/integration/ -timeout=180s

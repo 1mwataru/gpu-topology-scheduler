@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: prefill-1
+  labels:
+    gpu-topology/role: "prefill"
+    gpu-topology/group: "llama70b-serving-01"
+spec:
+  schedulerName: gpu-topology-scheduler
+  containers:
+    - name: app
+      image: registry.k8s.io/pause:3.9
+      resources:
+        requests:
+          cpu: 100m
+          memory: 64Mi
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: decode-1
+  labels:
+    gpu-topology/role: "decode"
+    gpu-topology/group: "llama70b-serving-01"
+spec:
+  schedulerName: gpu-topology-scheduler
+  containers:
+    - name: app
+      image: registry.k8s.io/pause:3.9
+      resources:
+        requests:
+          cpu: 100m
+          memory: 64Mi
